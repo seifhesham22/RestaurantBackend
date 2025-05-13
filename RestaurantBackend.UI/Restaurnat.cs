@@ -1,6 +1,6 @@
 namespace RestaurantBackend.UI
 {
-    public class WeatherForecast
+    public class Restaurnat
     {
         public DateOnly Date { get; set; }
 
