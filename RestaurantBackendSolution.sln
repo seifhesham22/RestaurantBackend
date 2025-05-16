@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantBackend.UI", "RestaurantBackend.UI\RestaurantBackend.UI.csproj", "{D725F3A5-C6EC-4287-8A4B-045446E8A351}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantBackend.UI", "RestaurantBackend.UI\RestaurantBackend.UI.csproj", "{D725F3A5-C6EC-4287-8A4B-045446E8A351}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DD5BC44C-1826-4E36-BBCB-69B0315BDD4C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{7650A037-4D0A-44D3-88DE-81F80FDDDF14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Core", "Restaurant.Core\Restaurant.Core.csproj", "{A17CBCB3-7C28-455D-BCA3-2448703EAD34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.Core", "Restaurant.Core\Restaurant.Core.csproj", "{A17CBCB3-7C28-455D-BCA3-2448703EAD34}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.Infrastructure", "Restaurant.Infrastructure\Restaurant.Infrastructure.csproj", "{9261C0D7-3402-4D0B-BDEB-77CF34648F7A}"
 EndProject
@@ -36,9 +36,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D725F3A5-C6EC-4287-8A4B-045446E8A351} = {7650A037-4D0A-44D3-88DE-81F80FDDDF14}
-		{A17CBCB3-7C28-455D-BCA3-2448703EAD34} = {7650A037-4D0A-44D3-88DE-81F80FDDDF14}
-		{9261C0D7-3402-4D0B-BDEB-77CF34648F7A} = {7650A037-4D0A-44D3-88DE-81F80FDDDF14}
+		{D725F3A5-C6EC-4287-8A4B-045446E8A351} = {DD5BC44C-1826-4E36-BBCB-69B0315BDD4C}
+		{A17CBCB3-7C28-455D-BCA3-2448703EAD34} = {DD5BC44C-1826-4E36-BBCB-69B0315BDD4C}
+		{9261C0D7-3402-4D0B-BDEB-77CF34648F7A} = {DD5BC44C-1826-4E36-BBCB-69B0315BDD4C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28428F6C-2D45-46DF-BEEF-8D1A6E454435}
