@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 namespace Entities;
-
 public partial class Dish
 {
     public Guid Id { get; set; }
