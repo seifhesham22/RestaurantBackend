@@ -21,6 +21,5 @@ namespace Restaurant.Core.Domain.Entities
         public DateTime DeleteDate { get; set; }
         public virtual ICollection<DishCart> DishCarts { get; set; } = new List<DishCart>();
         public virtual ICollection<Rating> Rating { get; set; } = new List<Rating>();
-
     }
 }
