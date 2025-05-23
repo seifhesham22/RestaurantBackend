@@ -1,9 +1,9 @@
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Core.Domain.IdentityEntities;
 using Restaurant.Infrastructure;
 using Restaurant.Infrastructure.DbContext;
+using System.Runtime.CompilerServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

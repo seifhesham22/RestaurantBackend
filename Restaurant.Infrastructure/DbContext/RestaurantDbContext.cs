@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Restaurant.Core.Domain.DbContextInterface;
 using Restaurant.Core.Domain.Entities;
 using Restaurant.Core.Domain.IdentityEntities;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Restaurant.Infrastructure.DbContext
 {
-    public class RestaurantDbContext : IdentityDbContext<ApplicationUser , ApplicationRole , Guid>
+    public class RestaurantDbContext : IdentityDbContext<ApplicationUser , ApplicationRole , Guid> 
     {
         public RestaurantDbContext(DbContextOptions options) : base(options)
         {
