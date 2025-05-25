@@ -18,7 +18,7 @@ namespace Restaurant.Infrastructure.Repositories
         {
             _db = db;
         }
-        public async Task<DishPagedList> GetAlldishesAsync(DishFilterParams filter)
+        public async Task<DishPagedList> GetAllDishesAsync(DishFilterParams filter)
         {
             IQueryable<Dish> dishes = _db.Set<Dish>();
 
@@ -43,8 +43,8 @@ namespace Restaurant.Infrastructure.Repositories
             {
                 DishList = dishesList,
                 TotalItems = totalItems,
-                Current = filter.Page,
-                Size = 10
+                CurrentPage = filter.Page,
+                PageSize = filter.PageSize
             };
         }
 
@@ -70,7 +70,7 @@ namespace Restaurant.Infrastructure.Repositories
                 .Take(pageSize);
         }
 
-        public async Task<Dish?> GetDishInformationAsync(Guid dishId)
+        public async Task<Dish?> GetDishInfoAsync(Guid dishId)
         {
             return await _db.Dishes.FirstOrDefaultAsync(x => x.ID == dishId);
         }

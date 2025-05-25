@@ -28,7 +28,7 @@ namespace Restaurant.Infrastructure.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task<List<Order>> GetListOfOrdersAsync(Guid userId)
+        public async Task<List<Order>> GetOrderListAsync(Guid userId)
         {
             return await _db.Orders.Where(x => x.UserId == userId).ToListAsync();
         }

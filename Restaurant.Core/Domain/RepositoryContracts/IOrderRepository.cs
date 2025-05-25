@@ -10,7 +10,7 @@ namespace Restaurant.Core.Domain.RepositoryContracts
     public interface IOrderRepository
     {
         public Task<Order?> GetOrderInformationAsync(Guid id);
-        public Task<List<Order>> GetListOfOrdersAsync(Guid userId);
+        public Task<List<Order>> GetOrderListAsync(Guid userId);
         public Task CreateOrderAsync(Order order);
         public Task ConfirmOrderDeliveryAsync(Order order);
     }

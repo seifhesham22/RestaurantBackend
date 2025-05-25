@@ -10,7 +10,7 @@ namespace Restaurant.Core.Domain.RepositoryContracts
     public interface IRatingRepository
     {
         public Task AddRating(Rating rating);
-        public Task<List<Rating>> GetAllDishRatings(Guid dishId);
+        public Task<List<Rating>> GetDishRatings(Guid dishId);
         public Task<bool> CanUserRate(Guid userId , Guid dishId);
     }
 }

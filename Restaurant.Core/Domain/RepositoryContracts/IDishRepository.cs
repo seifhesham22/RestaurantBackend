@@ -9,8 +9,8 @@ namespace Restaurant.Core.Domain.RepositoryContracts
 {
     public interface IDishRepository
     {
-        public Task<DishPagedList> GetAlldishesAsync(DishFilterParams dish);
-        public Task<Dish?> GetDishInformationAsync(Guid dishId);
+        public Task<DishPagedList> GetAllDishesAsync(DishFilterParams dish);
+        public Task<Dish?> GetDishInfoAsync(Guid dishId);
         public Task UpdateDishAvgRatingAsync(Dish dish);
     }
 }

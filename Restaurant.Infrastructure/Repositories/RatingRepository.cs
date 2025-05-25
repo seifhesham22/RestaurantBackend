@@ -30,7 +30,7 @@ namespace Restaurant.Infrastructure.Repositories
             return await _db.DishesCarts.AnyAsync(x => x.DishId == dishId && x.UserId == userId && x.OrderId != null);
         }
 
-        public async Task<List<Rating>> GetAllDishRatings(Guid dishId)
+        public async Task<List<Rating>> GetDishRatings(Guid dishId)
         {
             return await _db.Ratings.Where(x => x.DishId == dishId).ToListAsync();
         }
