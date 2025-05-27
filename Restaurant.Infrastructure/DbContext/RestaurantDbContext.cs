@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Restaurant.Core.Domain.DbContextInterface;
 using Restaurant.Core.Domain.Entities;
 using Restaurant.Core.Domain.IdentityEntities;
 using System;
