@@ -10,8 +10,8 @@ namespace Restaurant.Core.ServicesContracts
 {
     public interface IDishService
     {
-        public Task<DishDto?> GetDishInfoAsync(Guid? dishId);
-        public Task<DishPagedListDto> GetDishPagedListAsync(DishFilterParams filter);
-        public Task UpdateDishAvgRatingService(Guid? dishId);
+        public Task<DishDto?> GetDishInfo(Guid? dishId);
+        public Task<DishPagedListDto> GetDishPagedList(DishFilterParams filter);
+        public Task UpdateDishAvgRating(Guid? dishId);
     }
 }

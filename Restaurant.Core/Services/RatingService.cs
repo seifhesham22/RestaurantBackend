@@ -14,6 +14,7 @@ namespace Restaurant.Core.Services
     {
         private readonly IRatingRepository _rating;
         private readonly IDishRepository _dish;
+
         public RatingService(IRatingRepository rating, IDishRepository dish)
         {
             _rating = rating;
@@ -42,7 +43,7 @@ namespace Restaurant.Core.Services
         public async Task<bool> CanUserRate(Guid? userId, Guid? dishId)
         {
             if (!userId.HasValue)
-                throw new ArgumentNullException($"User ID is required");
+                throw new ArgumentNullException($"{nameof(userId)} is required");
 
             if (!dishId.HasValue)
                 throw new ArgumentNullException($"DishId is required");

@@ -24,7 +24,7 @@ namespace Restaurant.Core.Services
             _mapper = mapper;
             _rating = rating;
         }
-        public async Task<DishDto?> GetDishInfoAsync(Guid? dishId)
+        public async Task<DishDto?> GetDishInfo(Guid? dishId)
         {
             if(!dishId.HasValue)
                 throw new ArgumentNullException("dishId is required");
@@ -36,17 +36,17 @@ namespace Restaurant.Core.Services
             return _mapper.Map<DishDto>(Dish);
         }
 
-        public async Task<DishPagedListDto> GetDishPagedListAsync(DishFilterParams filter)
+        public async Task<DishPagedListDto> GetDishPagedList(DishFilterParams filter)
         {
             if (filter == null)
-                throw new NotFoundException("Filter parameters Are required");
+                throw new NotFoundException("Filter parameters are required");
 
             var pagedList = await _db.GetAllDishesAsync(filter);
 
-            return _mapper.Map<DishPagedListDto>(pagedList); ;
+            return _mapper.Map<DishPagedListDto>(pagedList);
         }
 
-        public async Task UpdateDishAvgRatingService(Guid? dishId)
+        public async Task UpdateDishAvgRating(Guid? dishId)
         {
             if (!dishId.HasValue) 
                 throw new ArgumentNullException("Dish Id is required");
