@@ -12,6 +12,7 @@ namespace Restaurant.Core.Domain.RepositoryContracts
         public Task<List<DishCart>> GetUserCartAsync(Guid userId);
         public Task AddDishToCartAsync(DishCart cartItem);
         public Task UpdateCartItemAsync(DishCart cartItem);
-        public Task RemoveDishFromCartAsync(DishCart cartItem);  
+        public Task RemoveDishFromCartAsync(DishCart cartItem);
+        public Task DeleteCartItemAsync(DishCart cartItem);
     }
 }
