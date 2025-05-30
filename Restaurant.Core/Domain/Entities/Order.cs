@@ -17,6 +17,7 @@ namespace Restaurant.Core.Domain.Entities
         public double Price { get; set; }
         public int status { get; set; } 
         public Guid UserId { get; set; }
+        public string Address { get; set; } = null!;
         public virtual ApplicationUser User { get; set; } = null!; // nav property
         public virtual ICollection<DishCart> DishCarts { get; set; } = new List<DishCart>();
     }

@@ -17,9 +17,10 @@ namespace Restaurant.Infrastructure.Repositories
         {
             _db = db;
         }
-        public Task ConfirmOrderDeliveryAsync(Order order)
+        public async Task ConfirmOrderDeliveryAsync(Order order)
         {
-            throw new NotImplementedException();
+            _db.Orders.Update(order);
+            await _db.SaveChangesAsync();
         }
 
         public async Task CreateOrderAsync(Order order)

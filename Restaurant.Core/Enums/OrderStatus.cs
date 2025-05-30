@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace Restaurant.Core.Enums
 {
-    public enum DishCategory
+    public enum OrderStatus
     {
-        Wok = 0,
-        Pizza = 1,
-        Soup = 2,
-        Dessert = 3,
-        Drink = 4
+        InProcess = 1,
+        Delivered = 2
     }
 }

@@ -34,6 +34,5 @@ namespace Restaurant.Infrastructure.Repositories
         {
             return await _db.Ratings.Where(x => x.DishId == dishId).ToListAsync();
         }
-
     }
 }
