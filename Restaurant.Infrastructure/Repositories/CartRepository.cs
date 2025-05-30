@@ -40,5 +40,10 @@ namespace Restaurant.Infrastructure.Repositories
             _db.DishesCarts.Update(cartItem);
             await _db.SaveChangesAsync();
         }
+        public async Task DeleteCartItemAsync(DishCart cartItem)
+        {
+            _db.DishesCarts.Remove(cartItem);
+            await _db.SaveChangesAsync();
+        }
     }
 }
