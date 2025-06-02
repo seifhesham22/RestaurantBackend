@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Restaurant.Core.Domain.Entities;
 using Restaurant.Core.Domain.RepositoryContracts;
 using Restaurant.Core.DTO;
+using Restaurant.Core.Errors;
 using Restaurant.Core.ServicesContracts;
 using System;
 using System.Collections.Generic;
@@ -30,22 +31,21 @@ namespace Restaurant.Core.Services
             if(dishId == null)
                 throw new ArgumentNullException($"DishId is required{nameof(dishId)}");
 
-            var dish = await _dish.GetDishInfoAsync(dishId.Value);
+            Dish? dish = await _dish.GetDishInfoAsync(dishId.Value);
             if (dish == null)
-                throw new ArgumentNullException("Invalid dish Id");
+                throw new NotFoundException($"There is no {nameof(dish)} with this id:{dishId.Value}");
 
-            var cartItems = await _cart.GetUserCartAsync(userId);
+            var cartItems = await _cart.GetUserCartItemsAsync(userId);
             
-            var excestingItem = cartItems.FirstOrDefault(x => x.DishId == dishId);
-            if(excestingItem != null)
+            var existingItem = cartItems.FirstOrDefault(x => x.DishId == dishId);
+            if(existingItem != null)
             {
-                excestingItem.Quantity += 1;
-                await _cart.UpdateCartItemAsync(excestingItem);
+                existingItem.Quantity += 1;
+                await _cart.UpdateCartItemAsync(existingItem);
             }
             else
             {
-
-                var cart = new DishCart
+                var dishCart = new DishCart
                 {
                     Id = Guid.NewGuid(),
                     UserId = userId,
@@ -53,14 +53,13 @@ namespace Restaurant.Core.Services
                     CreateDateTime = DateTime.Now,
                     Quantity = 1
                 };
-
-                await _cart.AddDishToCartAsync(cart);
+                await _cart.AddDishToCartAsync(dishCart);
             }
         }
 
-        public async Task<List<DishCartDto>> GetUserCart(Guid userId)
+        public async Task<List<DishCartDto>> GetUserCartItems(Guid userId)
         {
-            var cart = await _cart.GetUserCartAsync(userId);
+            var cart = await _cart.GetUserCartItemsAsync(userId);
 
             return _mapper.Map<List<DishCartDto>>(cart);
         }
@@ -74,7 +73,7 @@ namespace Restaurant.Core.Services
             if (dish == null)
                 throw new ArgumentNullException("Invalid dish Id");
 
-            var cartItems = await _cart.GetUserCartAsync(userId);
+            var cartItems = await _cart.GetUserCartItemsAsync(userId);
 
             var existingItem = cartItems.FirstOrDefault(x => x.DishId == dishId);
 
@@ -83,7 +82,7 @@ namespace Restaurant.Core.Services
 
             if (existingItem.Quantity > 1)
             {
-                existingItem.Quantity--;
+                --existingItem.Quantity;
                 await _cart.UpdateCartItemAsync(existingItem);
             }
             else

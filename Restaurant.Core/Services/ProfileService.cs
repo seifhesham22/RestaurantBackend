@@ -34,13 +34,13 @@ namespace Restaurant.Core.Services
             _mapper = mapper;
         }
 
-        public async Task EditUserProfile(UserEditDto? request)
+        public async Task EditUserProfile(UserEditDto? userEdit)
         {
-            if (request == null)
-                throw new ArgumentNullException(nameof(request));
+            if (userEdit == null)
+                throw new ArgumentNullException(nameof(userEdit));
 
             ApplicationUser User = await FindUser();
-            _mapper.Map(request , User);
+            _mapper.Map(userEdit , User);
             
             var result = await _userManager.UpdateAsync(User);
             if (!result.Succeeded)

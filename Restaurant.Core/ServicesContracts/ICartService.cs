@@ -10,7 +10,7 @@ namespace Restaurant.Core.ServicesContracts
 {
     public interface ICartService
     {
-        public Task<List<DishCartDto>> GetUserCart(Guid userId);
+        public Task<List<DishCartDto>> GetUserCartItems(Guid userId);
         public Task AddDishToCart(Guid? dishId , Guid userId);
         public Task RemoveDishFromCart(Guid? dishId , Guid userId);
     }
