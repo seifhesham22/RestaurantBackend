@@ -9,9 +9,10 @@ namespace Restaurant.Core.Domain.RepositoryContracts
 {
     public interface ICartRepository
     {
-        public Task<List<DishCart>> GetUserCartAsync(Guid userId);
+        public Task<List<DishCart>> GetUserCartItemsAsync(Guid userId);
         public Task AddDishToCartAsync(DishCart cartItem);
         public Task UpdateCartItemAsync(DishCart cartItem);
-        public Task RemoveDishFromCartAsync(DishCart cartItem);  
+        public Task RemoveDishFromCartAsync(DishCart cartItem);
+        public Task DeleteCartItemAsync(DishCart cartItem);
     }
 }
