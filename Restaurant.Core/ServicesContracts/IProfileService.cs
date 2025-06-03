@@ -1,4 +1,5 @@
-﻿using Restaurant.Core.DTO;
+﻿using Restaurant.Core.Domain.IdentityEntities;
+using Restaurant.Core.DTO;
 using Restaurant.Core.Token;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,9 @@ namespace Restaurant.Core.ServicesContracts
 {
     public interface IProfileService
     {
-        public Task<TokenResponse> Login(LoginCredentials? credentials);
+        public Task<ApplicationUser> Login(LoginCredentials? credentials);
         public Task Logout();
-        public Task<TokenResponse> Register(UserRegisterDto? user);
+        public Task<ApplicationUser> Register(UserRegisterDto? user);
         public Task<UserDto> GetUserProfile();
         public Task EditUserProfile(UserEditDto? user);
     }
