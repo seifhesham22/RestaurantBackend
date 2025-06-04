@@ -43,7 +43,7 @@ namespace Restaurant.Core.Services
             if(!userId.HasValue)
                 throw new ArgumentNullException(nameof(userId), "User ID is required.");
 
-            var cart = await _cartRepository.GetUserCartAsync(userId.Value);
+            var cart = await _cartRepository.GetUserCartItemsAsync(userId.Value);
             if (cart == null)
                 throw new NotFoundException($"No cart for the user {userId}");
 

@@ -24,7 +24,7 @@ namespace Restaurant.Infrastructure.Repositories
            await _db.SaveChangesAsync();
         }
 
-        public async Task<List<DishCart>> GetUserCartAsync(Guid userId)
+        public async Task<List<DishCart>> GetUserCartItemsAsync(Guid userId)
         {
             return await _db.DishesCarts.Where(x => x.Id == userId && x.OrderId == null).Include(x => x.Dish).ToListAsync();
         }

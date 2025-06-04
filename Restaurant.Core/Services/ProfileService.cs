@@ -53,7 +53,7 @@ namespace Restaurant.Core.Services
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<TokenResponse> Login(LoginCredentials? credentials)
+        public async Task<ApplicationUser> Login(LoginCredentials? credentials)
         {
             if(credentials == null)
                 throw new ArgumentNullException($"Login Credentials required{nameof(credentials)}");
@@ -65,11 +65,8 @@ namespace Restaurant.Core.Services
             var result = await _signInManager.CheckPasswordSignInAsync(user, credentials.Password, false);
             if (!result.Succeeded)
                 throw new UnauthorizedAccessException("invalid credentials");
-            // token should be here. 
-            return new TokenResponse
-            {
-                Token = "abc"
-            };
+ 
+            return user;
         }
 
         public async Task Logout()
@@ -77,7 +74,7 @@ namespace Restaurant.Core.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<TokenResponse> Register(UserRegisterDto? user)
+        public async Task<ApplicationUser> Register(UserRegisterDto? user)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
@@ -89,11 +86,7 @@ namespace Restaurant.Core.Services
             if (!result.Succeeded)
                 throw new ApplicationException(string.Join("," , result.Errors.Select(x => x.Description)));
 
-            //handleing token here
-            return new TokenResponse
-            {
-                Token = "abc"
-            };   
+            return User;   
         }
 
         private async Task<ApplicationUser> FindUser()
