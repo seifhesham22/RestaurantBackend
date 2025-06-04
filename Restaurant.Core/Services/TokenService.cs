@@ -45,9 +45,9 @@ namespace Restaurant.Core.Services
 
             JwtSecurityToken Securitytoken = new
                 JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
-                claims,
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
                 expires: expirationDate,
                 signingCredentials: signingCredentials
                 );
