@@ -20,5 +20,20 @@ namespace Restaurant.Infrastructure.DbContext
         public DbSet<Dish>  Dishes { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<DishCart> DishesCarts { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Dish>().ToTable("Dishes");
+
+            string dishJson = System.IO.File.ReadAllText("C:\\Users\\user\\Source\\Repos\\RestaurantBackend\\Restaurant.Infrastructure\\Dishes.Json");
+            List<Dish>? dishList = System.Text.Json.JsonSerializer.Deserialize<List<Dish>>(dishJson);
+
+            foreach(Dish dish in dishList)
+            {
+                builder.Entity<Dish>().HasData(dish);
+            }
+        }
     }
 }

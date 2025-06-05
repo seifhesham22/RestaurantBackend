@@ -72,7 +72,7 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task<Dish?> GetDishInfoAsync(Guid dishId)
         {
-            return await _db.Dishes.FirstOrDefaultAsync(x => x.ID == dishId);
+            return await _db.Dishes.FirstOrDefaultAsync(x => x.Id == dishId);
         }
 
         public async Task UpdateDishAvgRatingAsync(Dish dish)
