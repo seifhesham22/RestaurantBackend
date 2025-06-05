@@ -8,7 +8,7 @@ namespace Restaurant.Core.Domain.Entities
 {
     public class Dish
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;
         public double Price { get; set; }
