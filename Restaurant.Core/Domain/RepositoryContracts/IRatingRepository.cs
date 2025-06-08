@@ -12,5 +12,7 @@ namespace Restaurant.Core.Domain.RepositoryContracts
         public Task AddRating(Rating rating);
         public Task<List<Rating>> GetDishRatings(Guid dishId);
         public Task<bool> CanUserRate(Guid userId , Guid dishId);
+        public Task<Rating?> DidUserRate(Guid dishId, Guid userId);
+        public Task UpdateRating(Rating rating);
     }
 }

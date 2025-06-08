@@ -9,7 +9,7 @@ namespace Restaurant.Core.ServicesContracts
 {
     public interface IRatingService
     {
-        public Task AddRating(Guid? dishId , int rating);
+        public Task AddRating(Guid? dishId, int rating, Guid userId);
         public Task<bool> CanUserRate(Guid? userId, Guid? dishId);
     }
 }

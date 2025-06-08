@@ -38,9 +38,6 @@ namespace Restaurant.Core.Services
 
         public async Task<DishPagedListDto> GetDishPagedList(DishFilterParams filter)
         {
-            if (filter == null)
-                throw new NotFoundException("Filter parameters are required");
-
             var pagedList = await _db.GetAllDishesAsync(filter);
 
             return _mapper.Map<DishPagedListDto>(pagedList);

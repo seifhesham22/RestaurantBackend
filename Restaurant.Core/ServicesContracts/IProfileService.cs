@@ -11,10 +11,11 @@ namespace Restaurant.Core.ServicesContracts
 {
     public interface IProfileService
     {
-        public Task<ApplicationUser> Login(LoginCredentials? credentials);
+        public Task<ApplicationUser> Login(LoginCredentials credentials);
         public Task Logout();
-        public Task<ApplicationUser> Register(UserRegisterDto? user);
+        public Task<ApplicationUser> Register(UserRegisterDto user);
         public Task<UserDto> GetUserProfile();
-        public Task EditUserProfile(UserEditDto? user);
+        public Task EditUserProfile(UserEditDto user);
+        public Task<ApplicationUser> FindUser();
     }
 }

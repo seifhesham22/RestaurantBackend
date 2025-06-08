@@ -17,6 +17,7 @@ namespace Restaurant.Core.AutoMapperProfiles
             CreateMap<UserRegisterDto , ApplicationUser>();
             CreateMap<UserEditDto , ApplicationUser>()
                 .ForAllMembers(x => x.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<ApplicationUser , UserDto>();
         }
     }
 }

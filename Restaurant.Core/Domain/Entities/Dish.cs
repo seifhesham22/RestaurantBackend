@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Restaurant.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace Restaurant.Core.Domain.Entities
         public string Image { get; set; } = null!;
         public bool IsVegetarian { get; set; }
         public float AverageRating { get; set; }
-        public int Category {  get; set; }
+        public DishCategory Category { get; set; }
         public DateTime CreateDateTime { get; set; }
         public DateTime ModifyDateTime { get; set; }
         public DateTime DeleteDate { get; set; }

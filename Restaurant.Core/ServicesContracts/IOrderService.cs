@@ -10,8 +10,8 @@ namespace Restaurant.Core.ServicesContracts
     public interface IOrderService
     {
         public Task<OrderDto?> GetOrderInfo(Guid? orderId);
-        public Task<List<OrderDto?>> GetAllOrders(Guid? userId);
-        public Task CreateOrder(Guid? userId);
+        public Task<List<OrderInfoDto?>> GetAllOrders(Guid? userId);
+        public Task CreateOrder(Guid? userId , CreateOrderDto createOrder);
         public Task ConfirmOrderDelivery(Guid? OrderId);
     }
 }

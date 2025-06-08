@@ -34,5 +34,16 @@ namespace Restaurant.Infrastructure.Repositories
         {
             return await _db.Ratings.Where(x => x.DishId == dishId).ToListAsync();
         }
+
+        public async Task<Rating?> DidUserRate(Guid dishId , Guid userId)
+        {
+            return await _db.Ratings.FirstOrDefaultAsync(x => x.UserId == userId && x.DishId == dishId);
+        }
+
+        public async Task UpdateRating(Rating rating)
+        {
+            _db.Ratings.Update(rating);
+            await _db.SaveChangesAsync();
+        }
     }
 }

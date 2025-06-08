@@ -13,8 +13,9 @@ namespace Restaurant.Core.AutoMapperProfiles
     {
         public OrderProfile()
         {
-            CreateMap<Order, OrderDto>();
-            CreateMap<Order, OrderDto>();
+            CreateMap<Order, OrderInfoDto>();
+            CreateMap<Order, OrderDto>()
+                .ForMember(dest => dest.Dishes, opt => opt.MapFrom(src => src.DishCarts));
         }
     }
 }
