@@ -22,7 +22,7 @@ namespace RestaurantBackend.API.Controllers
         [Route("get")]
         public async Task<IActionResult> Get()
         {
-            var user = await _profile.FindUser();
+            var user = await _profile.GetUser();
             var cartItems = await _cart.GetUserCartItems(user.Id);
 
             return Ok(cartItems);
@@ -32,7 +32,7 @@ namespace RestaurantBackend.API.Controllers
         [Route("dish/{dishId}")]
         public async Task<IActionResult> Add(Guid dishId)
         {
-            var user = await _profile.FindUser();
+            var user = await _profile.GetUser();
             await _cart.AddDishToCart(dishId , user.Id);
 
             return Ok();
@@ -42,7 +42,7 @@ namespace RestaurantBackend.API.Controllers
         [Route("dish/{dishId}")]
         public async Task<IActionResult> Delete(Guid dishId)
         {
-            var user = await _profile.FindUser();
+            var user = await _profile.GetUser();
             await _cart.RemoveDishFromCart(dishId , user.Id);
 
             return Ok();

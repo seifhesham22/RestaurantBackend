@@ -36,7 +36,7 @@ namespace Restaurant.Core.Services
 
         public async Task EditUserProfile(UserEditDto? userEdit)
         {
-            ApplicationUser User = await FindUser();
+            ApplicationUser User = await GetUser();
             _mapper.Map(userEdit , User);
             
             var result = await _userManager.UpdateAsync(User);
@@ -46,7 +46,7 @@ namespace Restaurant.Core.Services
 
         public async Task<UserDto> GetUserProfile()
         {
-            ApplicationUser user = await FindUser();
+            ApplicationUser user = await GetUser();
             return _mapper.Map<UserDto>(user);
         }
 
@@ -81,7 +81,7 @@ namespace Restaurant.Core.Services
             return User;   
         }
 
-        public async Task<ApplicationUser> FindUser()
+        public async Task<ApplicationUser> GetUser()
         {
             var userId = _contextAccessor
                .HttpContext
@@ -96,6 +96,6 @@ namespace Restaurant.Core.Services
                 throw new ArgumentNullException("User not found");
 
             return user;
-        } 
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Restaurant.Core.DishCartExtentions;
 using Restaurant.Core.Domain.Entities;
 using Restaurant.Core.Domain.RepositoryContracts;
 using Restaurant.Core.DTO;
@@ -35,7 +36,7 @@ namespace Restaurant.Core.Services
             if (order == null)
                 throw new NotFoundException($"The order with {orderId} not found");
 
-            order.status = OrderStatus.Delivered;
+            order.Status = OrderStatus.Delivered;
             await _db.ConfirmOrderDeliveryAsync(order);
         }
 
@@ -54,13 +55,15 @@ namespace Restaurant.Core.Services
             if (cart == null)
                 throw new NotFoundException($"No cart for the user {userId}");
 
-            double totalPrice = cart.Sum(x => x.Dish.Price * x.Quantity);
+            double totalPrice = cart.GetTotalPrice();
 
             var orderId = Guid.NewGuid();
             foreach(var item in cart)
             {
                 item.OrderId = orderId;
             }
+
+            var status = Enums.OrderStatus.InProcess;
 
             Order order = new Order()
             {
@@ -69,7 +72,7 @@ namespace Restaurant.Core.Services
                 CreateDateTime = DateTime.UtcNow,
                 Address = createOrder.Address,
                 Price = totalPrice,
-                status = Enums.OrderStatus.InProcess,
+                Status = status,
                 UserId = userId.Value,
                 DishCarts = cart,
             }; 

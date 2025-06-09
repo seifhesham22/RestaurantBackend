@@ -16,11 +16,10 @@ namespace Restaurant.Core.AutoMapperProfiles
         {
             CreateMap<DishCartDto, DishCart>();
             CreateMap<DishCart, DishCartDto>()
-                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Dish.Image))  // dest => destination, opt => options(conditions), src => source 
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Dish.Image))  
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Dish.Name))
                 .ForMember(dest => dest.Price, opt => opt.MapFrom(src =>src.Dish.Price))
                 .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.Quantity * src.Dish.Price));
-               
         }
     }
 }

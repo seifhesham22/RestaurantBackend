@@ -31,7 +31,7 @@ namespace RestaurantBackend.API.Controllers
         [Route("order")]
         public async Task<IActionResult> Get()
         {
-            var user = await _profile.FindUser();
+            var user = await _profile.GetUser();
             var orderList = await _order.GetAllOrders(user.Id);
             return Ok(orderList);
         }
@@ -40,7 +40,7 @@ namespace RestaurantBackend.API.Controllers
         [Route("order")]
         public async Task<IActionResult> Create([FromBody] CreateOrderDto createOrder)
         {
-            var user = await _profile.FindUser();
+            var user = await _profile.GetUser();
             await _order.CreateOrder(user.Id , createOrder);
             return Ok();
         }

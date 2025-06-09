@@ -44,7 +44,7 @@ namespace RestaurantBackend.UI.Controllers
         [Route("[Action]/{id}/rating")]
         public async Task<IActionResult> Check(Guid dishId)
         {
-            ApplicationUser user = await _profileService.FindUser();
+            ApplicationUser user = await _profileService.GetUser();
             bool canRate = await _ratingService.CanUserRate(user.Id , dishId);
             return Ok(canRate);
         }
@@ -60,7 +60,7 @@ namespace RestaurantBackend.UI.Controllers
             if (!canRate)
                 return Conflict("Need to order the dish before reting it");
                 
-            await _rating.AddRating(dishId, score, user.Id);
+            await _rating.AddRating(user.Id, dishId, score);
             await _dishService.UpdateDishAvgRating(dishId);
 
             return NoContent();
@@ -68,7 +68,7 @@ namespace RestaurantBackend.UI.Controllers
 
         private async Task<ApplicationUser> GetCurrentUser()
         {
-            return await _profileService.FindUser();
+            return await _profileService.GetUser();
         }
 
         private async Task<bool> CanUserRateDish(Guid userId, Guid dishId)

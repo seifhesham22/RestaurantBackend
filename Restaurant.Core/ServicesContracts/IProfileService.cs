@@ -16,6 +16,6 @@ namespace Restaurant.Core.ServicesContracts
         public Task<ApplicationUser> Register(UserRegisterDto user);
         public Task<UserDto> GetUserProfile();
         public Task EditUserProfile(UserEditDto user);
-        public Task<ApplicationUser> FindUser();
+        public Task<ApplicationUser> GetUser();
     }
 }

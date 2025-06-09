@@ -22,7 +22,7 @@ namespace Restaurant.Core.Services
             _dish = dish;
         }
 
-        public async Task AddRating(Guid? dishId, int rating, Guid userId)
+        public async Task AddRating(Guid userId, Guid? dishId, int rating)
         {
             if (!dishId.HasValue)
                 throw new ArgumentNullException($"Dish id{dishId} is null");
@@ -40,7 +40,7 @@ namespace Restaurant.Core.Services
             }
             else
             {
-                await AddNewRating(dishId.Value, rating, userId);
+                await AddNewRating(userId, dishId.Value, rating);
             }
         }
 
@@ -55,13 +55,13 @@ namespace Restaurant.Core.Services
             return await _rating.CanUserRate(userId.Value, dishId.Value);
         }
 
-        private async Task UpdateRating(Rating rating , int score)
+        private async Task UpdateRating(Rating rating, int score)
         {
             rating.Value = score;
             await _rating.UpdateRating(rating);
         }
 
-        private async Task AddNewRating(Guid dishId, int score, Guid userId)
+        private async Task AddNewRating(Guid userId, Guid dishId, int score)
         {
             var rating = new Rating
             {
