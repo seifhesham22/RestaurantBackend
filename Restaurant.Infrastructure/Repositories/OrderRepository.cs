@@ -36,7 +36,10 @@ namespace Restaurant.Infrastructure.Repositories
 
         public async Task<Order?> GetOrderInformationAsync(Guid orderId)
         {
-            return await _db.Orders.FirstOrDefaultAsync(x => x.Id == orderId);
+            return await _db.Orders
+                .Include(x => x.DishCarts)
+                .ThenInclude(x => x.Dish)
+                .FirstOrDefaultAsync(x => x.Id == orderId);
         }
     }
 }

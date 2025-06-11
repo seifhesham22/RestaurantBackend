@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Restaurant.Core.Domain.Entities;
 using Restaurant.Core.DTO;
 using System;
@@ -14,7 +15,11 @@ namespace Restaurant.Core.AutoMapperProfiles
         public DishCartProfile()
         {
             CreateMap<DishCartDto, DishCart>();
-            CreateMap<DishCart , DishCartDto>();
+            CreateMap<DishCart, DishCartDto>()
+                .ForMember(dest => dest.Image, opt => opt.MapFrom(src => src.Dish.Image))  
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Dish.Name))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src =>src.Dish.Price))
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.Quantity * src.Dish.Price));
         }
     }
 }

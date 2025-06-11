@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Restaurant.Core.Services
 {
@@ -21,23 +22,26 @@ namespace Restaurant.Core.Services
             _dish = dish;
         }
 
-        public async Task AddRating(Guid? dishId, int rating)
+        public async Task AddRating(Guid userId, Guid? dishId, int rating)
         {
             if (!dishId.HasValue)
                 throw new ArgumentNullException($"Dish id{dishId} is null");
 
             Dish? dish = await _dish.GetDishInfoAsync(dishId.Value);
+
             if(dish == null)
                 throw new NotFoundException($"Dish with {dishId} not found");
 
-            Rating NewRating = new Rating()
-            {
-                DishId = dishId.Value,
-                Value = rating,
-                Id = Guid.NewGuid()
-            };
+            var existingRate = await _rating.DidUserRate(dishId.Value, userId);
 
-            await _rating.AddRating(NewRating);
+            if(existingRate is not null)
+            {
+                await UpdateRating(existingRate , rating);
+            }
+            else
+            {
+                await AddNewRating(userId, dishId.Value, rating);
+            }
         }
 
         public async Task<bool> CanUserRate(Guid? userId, Guid? dishId)
@@ -49,6 +53,25 @@ namespace Restaurant.Core.Services
                 throw new ArgumentNullException($"DishId is required");
 
             return await _rating.CanUserRate(userId.Value, dishId.Value);
+        }
+
+        private async Task UpdateRating(Rating rating, int score)
+        {
+            rating.Value = score;
+            await _rating.UpdateRating(rating);
+        }
+
+        private async Task AddNewRating(Guid userId, Guid dishId, int score)
+        {
+            var rating = new Rating
+            {
+                Id = Guid.NewGuid(),
+                DishId = dishId,
+                UserId = userId,
+                Value = score
+            };
+
+            await _rating.AddRating(rating);
         }
     }
 }

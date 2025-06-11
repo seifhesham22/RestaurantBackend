@@ -36,10 +36,7 @@ namespace Restaurant.Core.Services
 
         public async Task EditUserProfile(UserEditDto? userEdit)
         {
-            if (userEdit == null)
-                throw new ArgumentNullException(nameof(userEdit));
-
-            ApplicationUser User = await FindUser();
+            ApplicationUser User = await GetUser();
             _mapper.Map(userEdit , User);
             
             var result = await _userManager.UpdateAsync(User);
@@ -49,15 +46,12 @@ namespace Restaurant.Core.Services
 
         public async Task<UserDto> GetUserProfile()
         {
-            ApplicationUser user = await FindUser();
+            ApplicationUser user = await GetUser();
             return _mapper.Map<UserDto>(user);
         }
 
-        public async Task<ApplicationUser> Login(LoginCredentials? credentials)
+        public async Task<ApplicationUser> Login(LoginCredentials credentials)
         {
-            if(credentials == null)
-                throw new ArgumentNullException($"Login Credentials required{nameof(credentials)}");
-
             var user = await _userManager.FindByEmailAsync(credentials.Email);
             if (user == null)
                 throw new UnauthorizedAccessException("Invalid credentials");
@@ -74,22 +68,20 @@ namespace Restaurant.Core.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<ApplicationUser> Register(UserRegisterDto? user)
+        public async Task<ApplicationUser> Register(UserRegisterDto user)
         {
-            if (user == null)
-                throw new ArgumentNullException(nameof(user));
-
             var User = _mapper.Map<ApplicationUser>(user);
             User.Id = Guid.NewGuid();
+            User.UserName = user.Email;
 
-            var result = await _userManager.CreateAsync(User);
+            var result = await _userManager.CreateAsync(User , user.Password);
             if (!result.Succeeded)
                 throw new ApplicationException(string.Join("," , result.Errors.Select(x => x.Description)));
 
             return User;   
         }
 
-        private async Task<ApplicationUser> FindUser()
+        public async Task<ApplicationUser> GetUser()
         {
             var userId = _contextAccessor
                .HttpContext
@@ -104,6 +96,6 @@ namespace Restaurant.Core.Services
                 throw new ArgumentNullException("User not found");
 
             return user;
-        } 
+        }
     }
 }

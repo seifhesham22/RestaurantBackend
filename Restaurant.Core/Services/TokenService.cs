@@ -29,7 +29,10 @@ namespace Restaurant.Core.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub , user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat , DateTime.UtcNow.ToString())
+                new Claim(JwtRegisteredClaimNames.Iat,
+          new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString(),
+          ClaimValueTypes.Integer64),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
 
             SymmetricSecurityKey securityKey = new 

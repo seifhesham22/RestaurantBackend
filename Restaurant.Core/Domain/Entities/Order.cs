@@ -1,4 +1,5 @@
 ﻿using Restaurant.Core.Domain.IdentityEntities;
+using Restaurant.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Restaurant.Core.Domain.Entities
         public DateTime ModifyDateTime { get; set; }
         public DateTime? DeleteDate { get; set; }
         public double Price { get; set; }
-        public int status { get; set; } 
+        public OrderStatus Status { get; set; } 
         public Guid UserId { get; set; }
         public string Address { get; set; } = null!;
         public virtual ApplicationUser User { get; set; } = null!; // nav property

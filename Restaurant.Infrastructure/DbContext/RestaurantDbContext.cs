@@ -24,13 +24,15 @@ namespace Restaurant.Infrastructure.DbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            builder.Entity<Dish>()
+                   .Property(d => d.Category)
+                   .HasConversion<int>();
             builder.Entity<Dish>().ToTable("Dishes");
 
             string dishJson = System.IO.File.ReadAllText("C:\\Users\\user\\Source\\Repos\\RestaurantBackend\\Restaurant.Infrastructure\\Dishes.Json");
             List<Dish>? dishList = System.Text.Json.JsonSerializer.Deserialize<List<Dish>>(dishJson);
 
-            foreach(Dish dish in dishList)
+            foreach (Dish dish in dishList)
             {
                 builder.Entity<Dish>().HasData(dish);
             }

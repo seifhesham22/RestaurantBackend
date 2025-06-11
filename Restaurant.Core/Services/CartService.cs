@@ -51,7 +51,8 @@ namespace Restaurant.Core.Services
                     UserId = userId,
                     DishId = dishId.Value,
                     CreateDateTime = DateTime.Now,
-                    Quantity = 1
+                    Quantity = 1,
+                    Dish = dish,
                 };
                 await _cart.AddDishToCartAsync(dishCart);
             }

@@ -16,6 +16,6 @@ namespace Restaurant.Core.DTO
         public string Image { get; set; } = null!;
         public bool IsVegetarian { get; set; }
         public float AverageRating { get; set; }
-        public List<DishCategory>? Categories { get; set; }
+        public DishCategory Category { get; set; }
     }
 }

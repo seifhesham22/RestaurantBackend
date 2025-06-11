@@ -22,10 +22,9 @@ namespace Restaurant.Infrastructure.Repositories
         {
             IQueryable<Dish> dishes = _db.Set<Dish>();
 
-            if(filter.Categories.Any() == true)
+            if(filter.Categories != null && filter.Categories.Any() == true)
             {
-                var categoriesInts = filter.Categories.Select(x => (int)x).ToList();
-                dishes = dishes.Where(x => categoriesInts.Contains(x.Category));
+                dishes = dishes.Where(d => filter.Categories.Contains(d.Category));
             }
 
             if(filter.Vegetarian == true)
@@ -36,7 +35,7 @@ namespace Restaurant.Infrastructure.Repositories
             var totalItems = await dishes.CountAsync();
 
             dishes = ApplySorting(dishes , filter.Sorting);
-            dishes = ApplyPagination(dishes, filter.Page);
+            dishes = ApplyPagination(dishes, filter.Page, filter.PageSize);
             
             var dishesList = await dishes.ToListAsync();
             return new DishPagedList
@@ -62,9 +61,8 @@ namespace Restaurant.Infrastructure.Repositories
             };
         }
 
-        private IQueryable<Dish> ApplyPagination(IQueryable<Dish> query, int page)
+        private IQueryable<Dish> ApplyPagination(IQueryable<Dish> query, int page , int pageSize)
         {
-            int pageSize = 10;
             return query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);

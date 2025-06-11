@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Restaurant.Core.DishCartExtentions;
 using Restaurant.Core.Domain.Entities;
 using Restaurant.Core.Domain.RepositoryContracts;
 using Restaurant.Core.DTO;
+using Restaurant.Core.Enums;
 using Restaurant.Core.Errors;
 using Restaurant.Core.ServicesContracts;
 using System;
@@ -34,30 +36,58 @@ namespace Restaurant.Core.Services
             if (order == null)
                 throw new NotFoundException($"The order with {orderId} not found");
 
-            order.status = 2;
+            order.Status = OrderStatus.Delivered;
             await _db.ConfirmOrderDeliveryAsync(order);
         }
 
-        public async Task CreateOrder(Guid? userId)
+        public async Task CreateOrder(Guid? userId , CreateOrderDto createOrder)
         {
             if(!userId.HasValue)
                 throw new ArgumentNullException(nameof(userId), "User ID is required.");
+
+            if (createOrder.DeliveryTime < DateTime.UtcNow)
+                throw new ArgumentException("delivery time can't be in past");
+
+            if(createOrder.DeliveryTime < DateTime.UtcNow.AddMinutes(60))
+                throw new ArgumentException("Delivery time must be at least 60 minutes from now.");
 
             var cart = await _cartRepository.GetUserCartItemsAsync(userId.Value);
             if (cart == null)
                 throw new NotFoundException($"No cart for the user {userId}");
 
-            Order order = new Order() { }; // to be continud later. Add and Time handleing
+            double totalPrice = cart.GetTotalPrice();
+
+            var orderId = Guid.NewGuid();
+            foreach(var item in cart)
+            {
+                item.OrderId = orderId;
+            }
+
+            var status = Enums.OrderStatus.InProcess;
+
+            Order order = new Order()
+            {
+                Id = orderId,
+                DeliveryTime = createOrder.DeliveryTime,
+                CreateDateTime = DateTime.UtcNow,
+                Address = createOrder.Address,
+                Price = totalPrice,
+                Status = status,
+                UserId = userId.Value,
+                DishCarts = cart,
+            }; 
+
+            await _db.CreateOrderAsync(order);
         }
 
-        public async Task<List<OrderDto?>> GetAllOrders(Guid? userId)
+        public async Task<List<OrderInfoDto?>> GetAllOrders(Guid? userId)
         {
             if(!userId.HasValue)
                 throw new ArgumentNullException(nameof(userId), "User ID is required.");
 
             var orders = await _db.GetOrderListAsync(userId.Value);
 
-            return _mapper.Map<List<OrderDto?>>(orders);
+            return _mapper.Map<List<OrderInfoDto?>>(orders);
         }
 
         public async Task<OrderDto?> GetOrderInfo(Guid? orderId)

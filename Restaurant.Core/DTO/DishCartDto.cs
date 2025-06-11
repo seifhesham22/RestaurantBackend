@@ -12,7 +12,7 @@ namespace Restaurant.Core.DTO
         public string Name { get; set; } = null!;
         public double Price { get; set; }
         public double TotalPrice { get; set; }
-        public int amount { get; set; }
+        public int Quantity { get; set; }
         public string? Image { get; set; }
     }
 }
