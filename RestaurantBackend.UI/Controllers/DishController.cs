@@ -7,7 +7,7 @@ using Restaurant.Core.ServicesContracts;
 namespace RestaurantBackend.UI.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("api/dish")]
     public class DishController : ControllerBase
     {
         private readonly IDishService _dishService;
@@ -15,7 +15,11 @@ namespace RestaurantBackend.UI.Controllers
         private readonly IProfileService _profileService;
         private readonly IRatingService _rating;
 
-        public DishController(IDishService dishService , IRatingService ratingService , IProfileService profileService , IRatingService rating)
+        public DishController(
+            IDishService dishService,
+            IRatingService ratingService,
+            IProfileService profileService,
+            IRatingService rating)
         {
             _dishService = dishService;
             _ratingService = ratingService;
@@ -24,25 +28,23 @@ namespace RestaurantBackend.UI.Controllers
         }
 
         [HttpGet]
-        [Route("[Action]")]
-        public async Task<IActionResult> Dish([FromQuery] DishFilterParams parameters)
+        public async Task<IActionResult> FilterDishes([FromQuery] DishFilterParams parameters)
         {
             var dishes = await _dishService.GetDishPagedList(parameters);
             return Ok(dishes);
         }
 
-        [HttpGet]
-        [Route("[Action]/{id}")]
-        public async Task<IActionResult> Dish(Guid Id)
+        [HttpGet("{dishId}")]
+        public async Task<IActionResult> GetDish(Guid dishId)
         {
-            var dish = await _dishService.GetDishInfo(Id);
+            var dish = await _dishService.GetDishInfo(dishId);
             return Ok(dish);
         }
 
         [Authorize]
         [HttpGet]
-        [Route("[Action]/{id}/rating")]
-        public async Task<IActionResult> Check(Guid dishId)
+        [Route("{dishId}/rating/[Action]")]
+        public async Task<IActionResult> check(Guid dishId)
         {
             ApplicationUser user = await _profileService.GetUser();
             bool canRate = await _ratingService.CanUserRate(user.Id , dishId);
@@ -51,8 +53,8 @@ namespace RestaurantBackend.UI.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("[Action]/{id}/rating")]
-        public async Task<IActionResult> Set(Guid dishId , int score) 
+        [Route("{dishId}/rating")]
+        public async Task<IActionResult> SetRating(Guid dishId , int score) 
         {
             var user = await GetCurrentUser();
             bool canRate = await CanUserRateDish(user.Id , dishId);

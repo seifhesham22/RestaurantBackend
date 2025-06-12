@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Restaurant.Core.Domain.Entities;
+using Restaurant.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Restaurant.Core.Domain.IdentityEntities
     {
         public string FullName { get; set; } = null!;
         public DateTime? BirthDate { get; set; }
-        public int Gender { get; set; }
+        public Gender gender { get; set; }
         public string Address { get; set; } = null!;
         public DateTime CreateDateTime { get; set; }
         public DateTime ModifyDateTime { get; set; }

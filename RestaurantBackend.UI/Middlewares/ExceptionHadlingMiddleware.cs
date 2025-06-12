@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Restaurant.Core.Errors;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace RestaurantBackend.API.Middlewares
     public class ExceptionHadlingMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionHadlingMiddleware> _logger;
 
-        public ExceptionHadlingMiddleware(RequestDelegate next)
+        public ExceptionHadlingMiddleware(RequestDelegate next, ILogger<ExceptionHadlingMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext httpContext)
@@ -24,6 +27,12 @@ namespace RestaurantBackend.API.Middlewares
             }
             catch (Exception ex)
             {
+                _logger.LogError(
+                    ex, "An unhandled exception occurred while processing request {Method} {Path}",
+                    httpContext.Request.Method,
+                    httpContext.Request.Path
+                    );
+
                 await HandleExceptionAsync(httpContext, ex);
             }
             

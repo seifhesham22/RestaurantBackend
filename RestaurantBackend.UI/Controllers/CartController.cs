@@ -6,7 +6,7 @@ namespace RestaurantBackend.API.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("cart")]
+    [Route("api/cart")]
     public class CartController : Controller
     {
         private readonly IProfileService _profile;
@@ -19,7 +19,6 @@ namespace RestaurantBackend.API.Controllers
         }
 
         [HttpGet]
-        [Route("get")]
         public async Task<IActionResult> Get()
         {
             var user = await _profile.GetUser();
