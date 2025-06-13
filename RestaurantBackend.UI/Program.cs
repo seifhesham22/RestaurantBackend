@@ -16,8 +16,17 @@ using RestaurantBackend.API.Middlewares;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
+using Serilog;
+using RestaurantBackend.API.Filters;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((HostBuilderContext context , IServiceProvider services , LoggerConfiguration configuration) =>
+{
+    configuration.ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services);
+});
 
 // Add services to the container.
 builder.Services.AddDbContext<RestaurantDbContext>(x=>x.UseSqlServer(builder.Configuration.GetConnectionString("Default"))); // DB configuration
@@ -27,6 +36,7 @@ builder.Services
     .AddDefaultTokenProviders()
     .AddUserStore<UserStore<ApplicationUser, ApplicationRole, RestaurantDbContext, Guid>>() // Identity Configuration
     .AddRoleStore<RoleStore<ApplicationRole, RestaurantDbContext, Guid>>();
+
 builder.Services.AddScoped<IDishRepository , DishRepository>();
 builder.Services.AddScoped<ICartRepository , CartRepository>();
 builder.Services.AddScoped<IOrderRepository , OrderRepository>();
@@ -39,6 +49,8 @@ builder.Services.AddScoped<IProfileService , ProfileService>();
 builder.Services.AddScoped<ITokenService , TokenService>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<RegisterUseCase>();
+
+
 //builder.Services.AddControllers();
 //Configuring JWT auth
 builder.Services.AddAuthentication(options =>
@@ -72,10 +84,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(DishCartProfile).Assembly);
 builder.Services
-       .AddControllers()
+       .AddControllers(options =>
+       {
+           options.Filters.Add<LoggingActionFilter>();
+       })
        .AddJsonOptions(options =>
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); // Important as Fuckkkkkkkkk
+       {
+           options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); // Important as Fuckkkkkkkkk
+       });
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -65,7 +65,7 @@ namespace Restaurant.Core.Services
 
         public async Task Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync(); 
         }
 
         public async Task<ApplicationUser> Register(UserRegisterDto user)

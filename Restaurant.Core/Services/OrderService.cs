@@ -36,6 +36,9 @@ namespace Restaurant.Core.Services
             if (order == null)
                 throw new NotFoundException($"The order with {orderId} not found");
 
+            if (order.Status == OrderStatus.Delivered)
+                throw new ArgumentException($"the order with the id {orderId} is already delivered");
+
             order.Status = OrderStatus.Delivered;
             await _db.ConfirmOrderDeliveryAsync(order);
         }

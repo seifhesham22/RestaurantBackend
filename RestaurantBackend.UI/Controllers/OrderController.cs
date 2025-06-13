@@ -7,7 +7,7 @@ namespace RestaurantBackend.API.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("api")]
+    [Route("api/order")]
     public class OrderController : Controller
     {
         private readonly IProfileService _profile;
@@ -19,8 +19,7 @@ namespace RestaurantBackend.API.Controllers
             _order = order;
         }
 
-        [HttpGet]
-        [Route("order/{OrderId}")]
+        [HttpGet("{orderId}")]
         public async Task<IActionResult> Get(Guid orderId)
         {
             var order = await _order.GetOrderInfo(orderId);
@@ -28,8 +27,7 @@ namespace RestaurantBackend.API.Controllers
         }
 
         [HttpGet]
-        [Route("order")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetById()
         {
             var user = await _profile.GetUser();
             var orderList = await _order.GetAllOrders(user.Id);
@@ -37,7 +35,6 @@ namespace RestaurantBackend.API.Controllers
         }
 
         [HttpPost]
-        [Route("order")]
         public async Task<IActionResult> Create([FromBody] CreateOrderDto createOrder)
         {
             var user = await _profile.GetUser();
@@ -45,8 +42,7 @@ namespace RestaurantBackend.API.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        [Route("order/{orderId}/status")]
+        [HttpPost("{orderId}/status")]
         public async Task<IActionResult> Set(Guid orderId)
         {
             await _order.ConfirmOrderDelivery(orderId);

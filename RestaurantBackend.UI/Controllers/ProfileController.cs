@@ -8,7 +8,7 @@ using Restaurant.Core.ServicesContracts;
 namespace RestaurantBackend.API.Controllers
 {
     
-    [Route("profile")]
+    [Route("api/account")]
     [ApiController]
     public class ProfileController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace RestaurantBackend.API.Controllers
 
         [HttpPost]
         [Route("[Action]")]
-        public async Task<IActionResult> Register([FromBody] UserRegisterDto user)
+        public async Task<IActionResult> register([FromBody] UserRegisterDto user)
         {
             var token = await _registerUseCase.HandleRegisterAsync(user);
             return Ok(token);
@@ -33,7 +33,7 @@ namespace RestaurantBackend.API.Controllers
 
         [HttpPost]
         [Route("[Action]")]
-        public async Task<IActionResult> Login([FromBody] LoginCredentials login)
+        public async Task<IActionResult> login([FromBody] LoginCredentials login)
         {
             var token = await _loginUseCase.HandleLoginAsync(login);
             return Ok(token);
@@ -42,7 +42,7 @@ namespace RestaurantBackend.API.Controllers
         [HttpPost]
         [Route("[Action]")]
         [Authorize]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> logout()
         {
             await _profileService.Logout();
             return Ok();
@@ -51,7 +51,7 @@ namespace RestaurantBackend.API.Controllers
         [HttpGet]
         [Route("[Action]")]
         [Authorize]
-        public async Task<IActionResult> Profile()
+        public async Task<IActionResult> profile()
         {
             var user = await _profileService.GetUserProfile();
             return Ok(user);
@@ -60,7 +60,7 @@ namespace RestaurantBackend.API.Controllers
         [HttpPost]
         [Route("[Action]")]
         [Authorize]
-        public async Task<IActionResult> Profile(UserEditDto user)
+        public async Task<IActionResult> profile(UserEditDto user)
         {
             await _profileService.EditUserProfile(user);
             return NoContent();
