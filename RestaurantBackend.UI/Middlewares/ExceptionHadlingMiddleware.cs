@@ -28,14 +28,14 @@ namespace RestaurantBackend.API.Middlewares
             catch (Exception ex)
             {
                 _logger.LogError(
-                    ex, "An unhandled exception occurred while processing request {Method} {Path}",
+                    ex,
+                    "An unhandled exception occurred while processing request {Method} {Path}",
                     httpContext.Request.Method,
                     httpContext.Request.Path
                     );
 
                 await HandleExceptionAsync(httpContext, ex);
             }
-            
         }
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {

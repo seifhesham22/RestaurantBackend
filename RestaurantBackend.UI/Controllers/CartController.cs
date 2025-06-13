@@ -12,7 +12,7 @@ namespace RestaurantBackend.API.Controllers
         private readonly IProfileService _profile;
         private readonly ICartService _cart;
 
-        public CartController(ICartService cart, IProfileService profile)
+        public CartController(ICartService cart, IProfileService profile , ILogger<CartController> logger)
         {
             _profile = profile;
             _cart = cart;

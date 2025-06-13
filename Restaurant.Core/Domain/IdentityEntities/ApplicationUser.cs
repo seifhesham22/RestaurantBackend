@@ -13,7 +13,7 @@ namespace Restaurant.Core.Domain.IdentityEntities
     {
         public string FullName { get; set; } = null!;
         public DateTime? BirthDate { get; set; }
-        public Gender gender { get; set; }
+        public Gender Gender { get; set; }
         public string Address { get; set; } = null!;
         public DateTime CreateDateTime { get; set; }
         public DateTime ModifyDateTime { get; set; }
