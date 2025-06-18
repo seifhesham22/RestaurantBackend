@@ -49,6 +49,7 @@ builder.Services.AddScoped<IProfileService , ProfileService>();
 builder.Services.AddScoped<ITokenService , TokenService>();
 builder.Services.AddScoped<LoginUseCase>();
 builder.Services.AddScoped<RegisterUseCase>();
+builder.Services.AddScoped<RefreshTokenUseCase>();
 
 
 //builder.Services.AddControllers();

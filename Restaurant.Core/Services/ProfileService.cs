@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Restaurant.Core.Domain.IdentityEntities;
 using Restaurant.Core.DTO;
 using Restaurant.Core.ServicesContracts;
@@ -36,7 +37,7 @@ namespace Restaurant.Core.Services
 
         public async Task EditUserProfile(UserEditDto? userEdit)
         {
-            ApplicationUser User = await GetUser();
+            ApplicationUser User = await GetUserByAccessToken();
             _mapper.Map(userEdit , User);
             
             var result = await _userManager.UpdateAsync(User);
@@ -46,7 +47,7 @@ namespace Restaurant.Core.Services
 
         public async Task<UserDto> GetUserProfile()
         {
-            ApplicationUser user = await GetUser();
+            ApplicationUser user = await GetUserByAccessToken();
             return _mapper.Map<UserDto>(user);
         }
 
@@ -81,7 +82,7 @@ namespace Restaurant.Core.Services
             return User;   
         }
 
-        public async Task<ApplicationUser> GetUser()
+        public async Task<ApplicationUser> GetUserByAccessToken()
         {
             var userId = _contextAccessor
                .HttpContext
@@ -96,6 +97,26 @@ namespace Restaurant.Core.Services
                 throw new ArgumentNullException("User not found");
 
             return user;
+        }
+
+        public async Task SaveRefreshToken(ApplicationUser user , string refreshToken)
+        {
+            user.RefreshToken = refreshToken;
+            user.RefreshExpiration = DateTime.UtcNow.AddDays(10);
+
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<ApplicationUser> GetUserByRefreshToken(string refreshToken)
+        {
+            return await _userManager.Users
+                .FirstOrDefaultAsync(x => x.RefreshToken == refreshToken.Trim());
+        }
+
+        public async Task<bool> IsRefreshTokenValid(ApplicationUser user , string refreshToken)
+        {
+            return user.RefreshToken == refreshToken &&
+                   user.RefreshExpiration > DateTime.UtcNow;
         }
     }
 }

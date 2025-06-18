@@ -15,12 +15,18 @@ namespace RestaurantBackend.API.Controllers
         private readonly IProfileService _profileService;
         private readonly LoginUseCase _loginUseCase;
         private readonly RegisterUseCase _registerUseCase;
+        private readonly RefreshTokenUseCase _refreshTokenUseCase;
 
-        public ProfileController(IProfileService profileService, LoginUseCase loginUseCase, RegisterUseCase registerUseCase)
+        public ProfileController(
+            IProfileService profileService,
+            LoginUseCase loginUseCase,
+            RegisterUseCase registerUseCase,
+            RefreshTokenUseCase refreshTokenUseCase)
         {
             _profileService = profileService;
             _loginUseCase = loginUseCase;
             _registerUseCase = registerUseCase;
+            _refreshTokenUseCase = refreshTokenUseCase;
         }
 
         [HttpPost]
@@ -64,6 +70,14 @@ namespace RestaurantBackend.API.Controllers
         {
             await _profileService.EditUserProfile(user);
             return NoContent();
+        }
+
+        [HttpPost]
+        [Route("[Action]")]
+        public async Task<IActionResult> GetNewToken([FromBody]string token)
+        {
+            var newToken = await _refreshTokenUseCase.HandleRefresh(token);
+            return Ok(newToken);
         }
     }
 }

@@ -24,6 +24,9 @@ namespace Restaurant.Core.Services
         {
             var user = await _profileService.Login(credentials);
 
+            var token = _tokenService.CreateJwtToken(user);
+            await _profileService.SaveRefreshToken(user, token.RefreshToken);
+
             return _tokenService.CreateJwtToken(user);
         }
     }

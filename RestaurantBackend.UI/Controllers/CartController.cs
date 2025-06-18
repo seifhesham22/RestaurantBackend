@@ -21,7 +21,7 @@ namespace RestaurantBackend.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var user = await _profile.GetUser();
+            var user = await _profile.GetUserByAccessToken();
             var cartItems = await _cart.GetUserCartItems(user.Id);
 
             return Ok(cartItems);
@@ -31,7 +31,7 @@ namespace RestaurantBackend.API.Controllers
         [Route("dish/{dishId}")]
         public async Task<IActionResult> Add(Guid dishId)
         {
-            var user = await _profile.GetUser();
+            var user = await _profile.GetUserByAccessToken();
             await _cart.AddDishToCart(dishId , user.Id);
 
             return Ok();
@@ -41,7 +41,7 @@ namespace RestaurantBackend.API.Controllers
         [Route("dish/{dishId}")]
         public async Task<IActionResult> Delete(Guid dishId)
         {
-            var user = await _profile.GetUser();
+            var user = await _profile.GetUserByAccessToken();
             await _cart.RemoveDishFromCart(dishId , user.Id);
 
             return Ok();

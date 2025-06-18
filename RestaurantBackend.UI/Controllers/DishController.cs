@@ -46,7 +46,7 @@ namespace RestaurantBackend.UI.Controllers
         [Route("{dishId}/rating/[Action]")]
         public async Task<IActionResult> check(Guid dishId)
         {
-            ApplicationUser user = await _profileService.GetUser();
+            ApplicationUser user = await _profileService.GetUserByAccessToken();
             bool canRate = await _ratingService.CanUserRate(user.Id , dishId);
             return Ok(canRate);
         }
@@ -70,7 +70,7 @@ namespace RestaurantBackend.UI.Controllers
 
         private async Task<ApplicationUser> GetCurrentUser()
         {
-            return await _profileService.GetUser();
+            return await _profileService.GetUserByAccessToken();
         }
 
         private async Task<bool> CanUserRateDish(Guid userId, Guid dishId)

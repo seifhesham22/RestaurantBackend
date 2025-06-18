@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Restaurant.Core.DTO;
 using Restaurant.Core.ServicesContracts;
 using Restaurant.Core.Token;
@@ -21,10 +22,16 @@ namespace Restaurant.Core.Services
             _tokenService = tokenService;
         }
 
-        public async Task<TokenResponse> HandleRegisterAsync(UserRegisterDto? user)
+        public async Task<TokenResponse> HandleRegisterAsync(UserRegisterDto user)
         {
             var User = await _profileService.Register(user);
-            return _tokenService.CreateJwtToken(User);
+
+            var token = _tokenService.CreateJwtToken(User);
+            await _profileService.SaveRefreshToken(User, token.RefreshToken);
+            
+            return token;
         }
     }
+
+    
 }
