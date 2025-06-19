@@ -27,6 +27,7 @@ namespace Restaurant.Infrastructure.DbContext
             builder.Entity<Dish>()
                    .Property(d => d.Category)
                    .HasConversion<int>();
+
             builder.Entity<Dish>().ToTable("Dishes");
 
             string dishJson = System.IO.File.ReadAllText("C:\\Users\\user\\Source\\Repos\\RestaurantBackend\\Restaurant.Infrastructure\\Dishes.Json");

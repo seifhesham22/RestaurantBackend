@@ -16,6 +16,11 @@ namespace Restaurant.Core.ServicesContracts
         public Task<ApplicationUser> Register(UserRegisterDto user);
         public Task<UserDto> GetUserProfile();
         public Task EditUserProfile(UserEditDto user);
-        public Task<ApplicationUser> GetUser();
+        public Task<ApplicationUser> GetUserByAccessToken();
+        public Task<ApplicationUser> GetUserByRefreshToken(string refreshToken);
+        public Task SaveRefreshToken(ApplicationUser user, string refreshToken);
+        public Task<bool> IsRefreshTokenValid(ApplicationUser user, string refreshToken);
+
+
     }
 }

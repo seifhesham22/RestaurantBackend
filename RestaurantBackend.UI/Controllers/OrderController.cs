@@ -29,7 +29,7 @@ namespace RestaurantBackend.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetById()
         {
-            var user = await _profile.GetUser();
+            var user = await _profile.GetUserByAccessToken();
             var orderList = await _order.GetAllOrders(user.Id);
             return Ok(orderList);
         }
@@ -37,7 +37,7 @@ namespace RestaurantBackend.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOrderDto createOrder)
         {
-            var user = await _profile.GetUser();
+            var user = await _profile.GetUserByAccessToken();
             await _order.CreateOrder(user.Id , createOrder);
             return Ok();
         }

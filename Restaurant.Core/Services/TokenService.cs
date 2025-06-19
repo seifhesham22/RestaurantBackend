@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -57,8 +58,55 @@ namespace Restaurant.Core.Services
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             string token = handler.WriteToken(Securitytoken);
+            string refreshToken = CreateRefreshToken();
 
-            return new TokenResponse() { Token = token };
+            return new TokenResponse
+            {
+                Token = token,
+                RefreshToken = refreshToken,
+                RefreshExpiration = DateTime.UtcNow.AddDays(10)
+            };
+        }
+
+        private string CreateRefreshToken()
+        {
+            byte[] bytes = new byte[64];
+
+            var randomNumberGenerator = RandomNumberGenerator.Create();
+            randomNumberGenerator.GetBytes(bytes);
+
+            return Convert.ToBase64String(bytes);
+        }
+
+        public ClaimsPrincipal ValidatePrincipal(string token)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+
+            var tokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateAudience = true,
+                ValidAudience = _configuration["Jwt:Audience"],
+                ValidateIssuer = true,
+                ValidIssuer = _configuration["Jwt:Issuer"],
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateLifetime = false,
+            };
+
+            var jwtTokenHnadler = new JwtSecurityTokenHandler();
+
+            ClaimsPrincipal claimsPrincipal = jwtTokenHnadler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+
+            if (claimsPrincipal == null)
+                throw new SecurityTokenException($"Invalid jwt access token{nameof(claimsPrincipal)}");
+
+            if(securityToken is not JwtSecurityToken jwtSecurityToken)
+                throw new SecurityTokenException($"Invalid token format {nameof(securityToken)}");
+
+            if (!jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                throw new SecurityTokenException($"Invalid hasing algorithm");
+
+            return claimsPrincipal;
         }
     }
 }
