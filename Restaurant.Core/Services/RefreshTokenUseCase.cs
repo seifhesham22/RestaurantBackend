@@ -27,10 +27,11 @@ namespace Restaurant.Core.Services
 
             ApplicationUser? user = await _profileService.GetUserByRefreshToken(refreshToken);
 
-            if (user == null || !await _profileService.IsRefreshTokenValid(user , refreshToken))
-            {
+            var isValidUser = user != null;
+            var hasValidRefreshToken = await _profileService.IsRefreshTokenValid(user, refreshToken);
+
+            if (!isValidUser || !hasValidRefreshToken)
                 throw new UnauthorizedAccessException("Invalid or expired refresh token");
-            }
 
             var newToken = _tokenService.CreateJwtToken(user);
             await _profileService.SaveRefreshToken(user, newToken.RefreshToken);

@@ -22,12 +22,12 @@ namespace Restaurant.Core.Services
             _tokenService = tokenService;
         }
 
-        public async Task<TokenResponse> HandleRegisterAsync(UserRegisterDto user)
+        public async Task<TokenResponse> HandleRegisterAsync(UserRegisterDto userDto)
         {
-            var User = await _profileService.Register(user);
+            var user = await _profileService.Register(userDto);
 
-            var token = _tokenService.CreateJwtToken(User);
-            await _profileService.SaveRefreshToken(User, token.RefreshToken);
+            var token = _tokenService.CreateJwtToken(user);
+            await _profileService.SaveRefreshToken(user, token.RefreshToken);
             
             return token;
         }
